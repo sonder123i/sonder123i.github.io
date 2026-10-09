@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>sonder123i · 在维护的公开项目</title>
+<meta name="description" content="sonder123i 的公开项目索引：卡皮巴拉教务助手，Android 上的选课抢课、课表与成绩。">
+<meta name="theme-color" content="#06080F">
+<meta property="og:type" content="website">
+<meta property="og:title" content="sonder123i">
+<meta property="og:description" content="公开项目索引。详情都在各自的项目页，这里只做入口。">
+<meta property="og:image" content="assets/icon-96.png">
+<link rel="icon" href="assets/icon-96.png">
+<style>
+:root{
+  --bg:#06080F;
+  --bg-2:#0A0E18;
+  --fg:#ECEDEF;
+  --muted:rgba(236,237,239,.62);
+  --faint:rgba(236,237,239,.50);
+  --brand:#5FD3A8;
+  --brand-deep:#3E8B6D;
+  --warm:#F0C078;
+  --violet:#8E7BFF;
+  --line:rgba(255,255,255,.10);
+  --line-2:rgba(255,255,255,.18);
+  --glass:rgba(255,255,255,.045);
+  --glass-2:rgba(255,255,255,.075);
+  --r:22px;
+  --r-sm:14px;
+  --maxw:1120px;
+  --shadow:0 24px 60px -28px rgba(0,0,0,.85);
+  --specular:rgba(255,255,255,.13);
+
+  --dur-fast-01:70ms;
+  --dur-fast-02:110ms;
+  --dur-moderate-01:150ms;
+  --dur-moderate-02:240ms;
+  --ease-standard:cubic-bezier(.2,0,.38,.9);
+  --ease-entrance:cubic-bezier(0,0,.38,.9);
+  --ease-spring:cubic-bezier(.34,1.56,.64,1);
+}
+html[data-theme="light"]{
+  --bg:#EDF0F5;
+  --bg-2:#F6F8FB;
+  --fg:#0B1016;
+  --muted:rgba(11,16,22,.64);
+  --faint:rgba(11,16,22,.60);
+  --brand:#267354;
+  --brand-deep:#1F6B4F;
+  --warm:#A8761F;
+  --violet:#6A55E0;
+  --line:rgba(11,16,22,.09);
+  --line-2:rgba(11,16,22,.16);
+  --glass:rgba(255,255,255,.55);
+  --glass-2:rgba(255,255,255,.72);
+  --shadow:0 24px 60px -34px rgba(15,25,45,.35);
+  --specular:rgba(255,255,255,.5);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--fg);
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",
+              "PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  font-size:16px;line-height:1.65;letter-spacing:.005em;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  min-height:100vh;display:flex;flex-direction:column;
+}
+img{display:block;max-width:100%}
+a{color:inherit}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;width:100%}
+
+/* ---------- aurora backdrop: 玻璃得有东西可折射 ---------- */
+.aurora{position:fixed;inset:0;z-index:-2;overflow:hidden;pointer-events:none}
+.aurora i{position:absolute;display:block;border-radius:50%;filter:blur(90px);opacity:.5}
+.aurora i:nth-child(1){width:52vw;height:52vw;left:-12vw;top:-16vw;background:radial-gradient(circle,#1E8A6A,transparent 68%)}
+.aurora i:nth-child(2){width:46vw;height:46vw;right:-14vw;top:2vw;background:radial-gradient(circle,#3B49B8,transparent 68%)}
+.aurora i:nth-child(3){width:40vw;height:40vw;left:26vw;top:34vw;background:radial-gradient(circle,#8A5B2A,transparent 70%);opacity:.34}
+html[data-theme="light"] .aurora i{opacity:.34}
+.grain{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.16;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E")}
+
+/* ---------- glass ---------- */
+.glass{
+  position:relative;background:var(--glass);
+  -webkit-backdrop-filter:blur(20px) saturate(170%);
+  backdrop-filter:blur(20px) saturate(170%);
+  border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);
+  --mx:50%;--my:0%;
+}
+.glass::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:radial-gradient(420px circle at var(--mx) var(--my),var(--specular),transparent 46%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.20),
+             inset 0 -1px 0 rgba(255,255,255,.04),
+             inset 0 0 0 1px rgba(255,255,255,.03);
+  transition:background var(--dur-moderate-01) var(--ease-standard);
+}
+html[data-theme="light"] .glass::after{
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 0 0 1px rgba(255,255,255,.4);
+}
+
+/* ---------- nav ---------- */
+.nav{position:sticky;top:0;z-index:50;padding:12px 0;
+  transition:background var(--dur-moderate-02) var(--ease-standard)}
+.nav-inner{
+  max-width:var(--maxw);margin:0 auto;padding:8px 10px 8px 16px;
+  display:flex;align-items:center;gap:12px;border-radius:18px;
+  background:var(--glass);border:1px solid transparent;
+  -webkit-backdrop-filter:blur(16px) saturate(160%);
+  backdrop-filter:blur(16px) saturate(160%);
+  transition:border-color var(--dur-moderate-02) var(--ease-standard),
+             box-shadow var(--dur-moderate-02) var(--ease-standard);
+}
+.nav.stuck .nav-inner{border-color:var(--line);box-shadow:var(--shadow)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:15px;
+  letter-spacing:.01em;text-decoration:none}
+.brand img{width:28px;height:28px;border-radius:8px}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.nav-link{text-decoration:none;color:var(--muted);font-size:14px;padding:8px 13px;border-radius:10px;
+  transition:color var(--dur-fast-02) var(--ease-standard),
+             background var(--dur-fast-02) var(--ease-standard)}
+.nav-link:hover{color:var(--fg);background:var(--glass-2)}
+.icon-btn{
+  width:36px;height:36px;border-radius:11px;display:grid;place-items:center;cursor:pointer;
+  border:1px solid var(--line);background:var(--glass-2);color:var(--muted);
+  transition:color var(--dur-fast-02) var(--ease-standard),
+             transform var(--dur-fast-02) var(--ease-spring),
+             border-color var(--dur-fast-02) var(--ease-standard);
+}
+.icon-btn:hover{color:var(--fg);border-color:var(--line-2);transform:translateY(-1px)}
+.icon-btn svg{width:17px;height:17px}
+html:not([data-theme="light"]) .i-sun{display:block}
+html:not([data-theme="light"]) .i-moon{display:none}
+html[data-theme="light"] .i-sun{display:none}
+html[data-theme="light"] .i-moon{display:block}
+
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;gap:9px;justify-content:center;
+  text-decoration:none;font-size:15px;font-weight:500;letter-spacing:.01em;
+  padding:12px 22px;border-radius:14px;border:1px solid transparent;cursor:pointer;
+  transition:transform var(--dur-fast-02) var(--ease-spring),
+             box-shadow var(--dur-moderate-01) var(--ease-standard),
+             border-color var(--dur-fast-02) var(--ease-standard);
+  will-change:transform;
+}
+.btn svg{width:16px;height:16px;flex:0 0 auto}
+.btn-primary{background:linear-gradient(180deg,#6FDEB4,#3E8B6D);color:#04140E;
+  box-shadow:0 10px 30px -12px rgba(62,139,109,.85),inset 0 1px 0 rgba(255,255,255,.5)}
+.btn-primary:hover{transform:translateY(-2px);
+  box-shadow:0 18px 40px -14px rgba(62,139,109,.95),inset 0 1px 0 rgba(255,255,255,.6)}
+.btn-ghost{background:var(--glass-2);border-color:var(--line);color:var(--fg);
+  -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.btn-ghost:hover{transform:translateY(-2px);border-color:var(--line-2)}
+.btn:active{transform:translateY(0) scale(.985);transition-duration:var(--dur-fast-01)}
+
+/* ---------- hero ---------- */
+main{flex:1}
+.hero{padding:72px 0 40px}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;font-size:12.5px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--brand);font-weight:500;
+  padding:6px 12px;border-radius:999px;border:1px solid var(--line);
+  background:var(--glass);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+}
+.eyebrow s{width:6px;height:6px;border-radius:50%;background:var(--brand);text-decoration:none;
+  box-shadow:0 0 0 4px rgba(95,211,168,.16)}
+h1{font-size:clamp(34px,4.6vw,52px);line-height:1.08;letter-spacing:-.028em;
+  margin:22px 0 0;font-weight:600;max-width:20em}
+h1 em{font-style:normal;background:linear-gradient(100deg,var(--brand) 8%,#9EE8CB 42%,var(--violet) 96%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.lede{margin:18px 0 0;font-size:17px;color:var(--muted);max-width:44em}
+
+/* ---------- projects ---------- */
+.section{padding:24px 0 56px}
+.label{font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);
+  margin:0 0 18px;font-weight:500}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;max-width:760px}
+.card{padding:26px;display:flex;flex-direction:column;gap:0}
+.card-head{display:flex;align-items:center;gap:13px}
+.card-head img{width:44px;height:44px;border-radius:13px;flex:0 0 auto}
+.card h3{margin:0;font-size:19px;font-weight:600;letter-spacing:-.01em}
+.card p{margin:14px 0 0;color:var(--muted);font-size:15px;line-height:1.7}
+.meta{margin:16px 0 0;font-size:13px;color:var(--faint);letter-spacing:.01em}
+.card-actions{margin-top:22px;display:flex;gap:10px;flex-wrap:wrap}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--line);padding:26px 0 40px;margin-top:auto}
+.foot{display:flex;align-items:center;gap:18px;flex-wrap:wrap;font-size:13.5px;color:var(--faint)}
+.foot a{color:var(--muted);text-decoration:none;transition:color var(--dur-fast-02) var(--ease-standard)}
+.foot a:hover{color:var(--fg)}
+.foot .copy{margin-left:auto}
+
+@media (max-width:760px){
+  .hero{padding:48px 0 28px}
+  .grid{grid-template-columns:1fr}
+  .nav-link{display:none}
+  .brand{font-size:14.5px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+<div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+<div class="grain" aria-hidden="true"></div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="/">
+      <img src="assets/icon-96.png" alt="">
+      sonder123i
+    </a>
+    <div class="nav-right">
+      <a class="nav-link" href="https://github.com/sonder123i">GitHub</a>
+      <button class="icon-btn" id="theme" type="button" aria-label="切换深浅色">
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4L17 7M7 17l-1.6 1.6"/></svg>
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 14.4A8.5 8.5 0 1 1 9.6 3.5a6.9 6.9 0 0 0 10.9 10.9z"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <header class="hero">
+    <div class="wrap">
+      <span class="eyebrow"><s></s>Public work</span>
+      <h1>在维护的公开项目，<em>就一个</em>。</h1>
+      <p class="lede">Android 上的教务客户端，和我自己的日常工具。这里只做入口，功能、截图和下载都在各自的项目页里。</p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="wrap">
+      <p class="label">在维护</p>
+      <div class="grid">
+        <article class="card glass">
+          <div class="card-head">
+            <img src="assets/icon-96.png" alt="卡皮巴拉教务助手图标">
+            <h3>卡皮巴拉教务助手</h3>
+          </div>
+          <p>选课抢课、课表成绩，都在一个 App 里。</p>
+          <p class="meta">Kotlin · Android · GPL-3.0</p>
+          <div class="card-actions">
+            <a class="btn btn-primary" href="https://sonder123i.github.io/capybara-course-helper/#install">
+              下载与详情
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+            <a class="btn btn-ghost" href="https://github.com/sonder123i/capybara-course-helper">源码</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <a href="https://github.com/sonder123i/sonder123i.github.io">本页源码</a>
+    <span class="copy">© 2026 sonder123i</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var root = document.documentElement;
+
+  /* theme: saved → system → dark，key 与项目落地页同一个，同源所以两边自然同步 */
+  try {
+    var saved = localStorage.getItem('cch-theme');
+    if (saved) root.setAttribute('data-theme', saved);
+    else root.setAttribute('data-theme',
+      window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+  } catch (e) { root.setAttribute('data-theme', 'dark'); }
+
+  document.getElementById('theme').addEventListener('click', function () {
+    var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('cch-theme', next); } catch (e) {}
+  });
+
+  var nav = document.querySelector('.nav');
+  var onScroll = function () { nav.classList.toggle('stuck', window.scrollY > 8); };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  /* 玻璃高光跟随指针，只在有精确指针的设备上开 */
+  if (window.matchMedia('(hover:hover) and (pointer:fine)').matches) {
+    var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    document.querySelectorAll('.card').forEach(function (el) {
+      el.addEventListener('pointermove', function (e) {
+        if (calm) return;
+        var r = el.getBoundingClientRect();
+        el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+        el.style.setProperty('--my', (e.clientY - r.top) + 'px');
+      }, { passive: true });
+    });
+  }
+})();
+</script>
+</body>
+</html>
