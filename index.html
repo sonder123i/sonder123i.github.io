@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>sonder123i · 在维护的公开项目</title>
-<meta name="description" content="sonder123i 的公开项目索引：卡皮巴拉教务助手，Android 上的选课抢课、课表与成绩。">
+<meta name="description" content="sonder123i 的公开项目索引：卡皮巴拉教务助手（Android 选课抢课、课表与成绩），钥湾 Keyhaven（Windows 本地 AI 代理网关）。">
 <meta name="theme-color" content="#06080F">
 <meta property="og:type" content="website">
 <meta property="og:title" content="sonder123i">
@@ -156,6 +156,12 @@ html[data-theme="light"] .i-moon{display:block}
 .btn-ghost:hover{transform:translateY(-2px);border-color:var(--line-2)}
 .btn:active{transform:translateY(0) scale(.985);transition-duration:var(--dur-fast-01)}
 
+/* 钥湾卡片用自己图标的蓝做主按钮，和项目页同一套色 */
+.btn-blue{background:linear-gradient(180deg,#7FB4FF,#2E63C8);color:#04101F;
+  box-shadow:0 10px 30px -12px rgba(46,99,200,.9),inset 0 1px 0 rgba(255,255,255,.55)}
+.btn-blue:hover{transform:translateY(-2px);
+  box-shadow:0 18px 40px -14px rgba(46,99,200,.95),inset 0 1px 0 rgba(255,255,255,.65)}
+
 /* ---------- hero ---------- */
 main{flex:1}
 .hero{padding:72px 0 40px}
@@ -229,8 +235,8 @@ footer{border-top:1px solid var(--line);padding:26px 0 40px;margin-top:auto}
   <header class="hero">
     <div class="wrap">
       <span class="eyebrow"><s></s>Public work</span>
-      <h1>在维护的公开项目，<em>就一个</em>。</h1>
-      <p class="lede">Android 上的教务客户端，和我自己的日常工具。这里只做入口，功能、截图和下载都在各自的项目页里。</p>
+      <h1>在维护的公开项目，<em>两个</em>。</h1>
+      <p class="lede">Android 上的教务客户端，和 Windows 上的本地小工具。这里只做入口，功能、截图和下载都在各自的项目页里。</p>
     </div>
   </header>
 
@@ -251,6 +257,22 @@ footer{border-top:1px solid var(--line);padding:26px 0 40px;margin-top:auto}
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </a>
             <a class="btn btn-ghost" href="https://github.com/sonder123i/capybara-course-helper">源码</a>
+          </div>
+        </article>
+
+        <article class="card glass">
+          <div class="card-head">
+            <img src="keyhaven/assets/icon-96.png" alt="钥湾 Keyhaven 图标">
+            <h3>钥湾 Keyhaven</h3>
+          </div>
+          <p>把 Claude Code 指向本机的 AI 代理网关。真 Key 只留本机，发出去的只是可吊销的代理密钥。</p>
+          <p class="meta">C# · Windows · MIT</p>
+          <div class="card-actions">
+            <a class="btn btn-blue" href="https://sonder123i.github.io/keyhaven/#install">
+              下载与详情
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+            <a class="btn btn-ghost" href="https://github.com/sonder123i/keyhaven">源码</a>
           </div>
         </article>
       </div>
